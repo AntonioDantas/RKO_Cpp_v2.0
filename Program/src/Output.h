@@ -26,6 +26,8 @@ void WriteSolutionScreen(const char *algorithms[], int numMH, TSol s,
 		printf("%.3lf ", s.rk[i]);
 
 	printf("\nofv: %.5lf", s.ofv); 
+	printf("\nf1: %.5lf", s.f1); 
+	printf("\nf2: %.5lf", s.f2); 
 	printf("\nTotal time: %.3f",timeTotal);
 	printf("\nBest time: %.3f\n\n",timeBest);
 
@@ -68,6 +70,8 @@ void WriteSolution(const char *algorithms[], int numMH, TSol s,
 		fprintf(solFile,"%.3lf ", s.rk[i]);
 
 	fprintf(solFile,"\nofv: %lf", s.ofv);
+	fprintf(solFile,"\nf1: %.5lf", s.f1); 
+	fprintf(solFile,"\nf2: %.5lf", s.f2); 
   	fprintf(solFile,"\nBest time: %.3f",timeBest);
 	fprintf(solFile,"\nTotal time:%.3f \n",timeTotal);
 
@@ -78,7 +82,7 @@ void WriteSolution(const char *algorithms[], int numMH, TSol s,
  Metodo: WriteResults
  Description: Outputs the results in a csv file.
 *************************************************************************************/
-void WriteResults(const char *algorithms[], int numMH, double ofv, 
+void WriteResults(const char *algorithms[], int numMH, double ofv, double f1, double f2,
 				  double ofvAverage, std::vector <double> ofvs, float timeBest, 
 				  float timeTotal, char instance[])
 {
@@ -98,14 +102,17 @@ void WriteResults(const char *algorithms[], int numMH, double ofv,
 	for (int i=0; i<numMH; i++)
 		fprintf(File,"%s | ", algorithms[i]);
 
+	fprintf(File,"\t%lf", ofv);
+	fprintf(File,"\t%lf", f1);
+	fprintf(File,"\t%lf", f2);
+	fprintf(File,"\t%lf", ofvAverage);
+	fprintf(File,"\t%.3f", timeBest);
+	fprintf(File,"\t%.3f", timeTotal);
+
     fprintf(File,"\t%d", (int)ofvs.size());
     for (unsigned int i=0; i<ofvs.size(); i++){
         fprintf(File,"\t%lf", ofvs[i]);   
 	}
-	fprintf(File,"\t%lf", ofv);
-	fprintf(File,"\t%lf", ofvAverage);
-	fprintf(File,"\t%.3f", timeBest);
-	fprintf(File,"\t%.3f", timeTotal);
 
 	fclose(File);
 }

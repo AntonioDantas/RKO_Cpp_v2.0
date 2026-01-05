@@ -1,17 +1,38 @@
 # Detect the operating system
-OS := $(shell uname -s)
+OS_RAW := $(shell uname -s)
+
+# Verifica se a string retornada contém "MINGW", "CYGWIN" ou "MSYS"
+# Isso cobre quase todos os ambientes de compilação no Windows
+ifneq (,$(findstring MINGW,$(OS_RAW)))
+    OS := Windows_NT
+else ifneq (,$(findstring CYGWIN,$(OS_RAW)))
+    OS := Windows_NT
+else ifneq (,$(findstring MSYS,$(OS_RAW)))
+    OS := Windows_NT
+else
+    OS := $(OS_RAW)
+endif
+
+# Configurações baseadas no SO detectado
 ifeq ($(OS), Windows_NT)
-    RM := del /Q /F
+    # No ambiente MinGW/MSYS, o 'rm' geralmente funciona melhor que o 'del'
+    # Mas mantive compatível com o seu original, ajustando se necessário.
+    RM := rm -f
     EXE := .exe
-	CCC = g++
+    CCC := g++
 else ifeq ($(OS), Linux)
     RM := rm -f
     EXE :=
-	CCC = g++
+    CCC := g++
 else ifeq ($(OS), Darwin)  
     RM := rm -f
     EXE :=
-	CCC = g++-14
+    CCC := g++-14
+else
+    # Fallback/Padrão caso a detecção falhe (Evita o erro "CCC vazio")
+    RM := rm -f
+    EXE :=
+    CCC := g++
 endif
 
 TARGETDIR = .

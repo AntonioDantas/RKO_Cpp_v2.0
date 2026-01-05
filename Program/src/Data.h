@@ -9,11 +9,14 @@
 ************************************************************************************/
 struct TSol
 {
-    std::vector <double> rk;                              // random-key vector
-    double ofv = std::numeric_limits<double>::infinity(); // objetive function value
+    std::vector <double> rk;                                // random-key vector
+    std::vector<std::vector<int>> routes;                   // routes of vehicles
+    double ofv = std::numeric_limits<double>::infinity();   // objetive function value
+    double f1;                                              // f1 function value
+    double f2;                                              // f2 function value
 
-    double best_time = 0.0;                               // computational time to find the solution
-    char nameMH[256];                                     // name of the metaheuristic that found the solution
+    double best_time = 0.0;                                 // computational time to find the solution
+    char nameMH[256];                                       // name of the metaheuristic that found the solution
 };
 
 /***********************************************************************************
@@ -29,6 +32,10 @@ struct TRunData
     int debug;                              // define the run mode (0 - save results in files; 1 - print results in screen)
     float restart;                          // define the restart strategy (0 - without restart; 1 - with restart)
     int sizePool;                           // define the size of the elite pool solutions
+    int VMIN;                               // minimum number of visits
+    int VMAX;                               // maximum number of visits
+    double F1MAX;                           // limite/weight of the f1 function (0 to infinity) or (0 to 1 mult-objective)
+    double F2MAX;                           // limite/weight of the f2 function (0 to 1)
 };
 
 /***********************************************************************************
